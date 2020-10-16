@@ -2,9 +2,20 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <title>Title</title>
 </head>
 <body>
-
+<div id="app">
+    {{ message }}
+</div>
 </body>
+<script>
+    var app = new Vue({
+        el:'#app',
+        data:{
+            message:'欢迎来到优惠影票'
+        }
+    })
+</script>
 </html>
