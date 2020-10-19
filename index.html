@@ -3,19 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <title>Title</title>
 </head>
 <body>
-<div id="app">
-    {{ message }}
+<div id="app" >
+    <input  type="text" >
+    <button type="button" @click="getTickte">查询</button>
+    <ul  v-for="(item, idx) in ticketList"  :key="idx">
+<!--        <li v-for="item in ticketList">-->
+<!--            {{ item.name }}-->
+<!--        </li>-->
+        <li >
+            {{ item.name }}
+        </li>
+        <li>
+            {{ item.price }}
+        </li>
+        <li>
+            {{ item.num }}
+        </li>
+        <li>
+            {{ item.description }}
+        </li>
+        <li>
+            {{ item.url }}
+        </li>
+    </ul>
 </div>
 </body>
 <script>
     var app = new Vue({
         el:'#app',
         data:{
-            message:'欢迎来到优惠影票'
-
+            ticketList: [
+                {name:"",price:"",num:"",description:"",url:""}
+            ]
+        },
+        created(){
+            this.getTickte()
+            console.log(this)
+        },
+        methods:{
+            getTickte:function () {
+                var that = this;
+                axios.post("http://10.3.0.52:8081/movie/ticket",{"cinema":"猫眼"})
+                    .then(function(response) {
+                        console.log(this);
+                        that.ticketList = response.data.data
+                    })
+            }
         }
     })
 </script>
