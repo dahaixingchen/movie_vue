@@ -8,26 +8,26 @@
 </head>
 <body>
 <div id="app" >
-    <input  type="text" >
-    <button type="button" @click="getTickte">查询</button>
+    <input  type="text" v-model="cinema" @keyup.enter = "getTickte">
+    <input type="button" value="查询"  @click="getTickte">
     <ul  v-for="(item, idx) in ticketList"  :key="idx">
 <!--        <li v-for="item in ticketList">-->
 <!--            {{ item.name }}-->
 <!--        </li>-->
         <li >
-            {{ item.name }}
+            标题：{{ item.name }}
         </li>
         <li>
-            {{ item.price }}
+            价格：{{ item.price }}
         </li>
         <li>
-            {{ item.num }}
+            数量：{{ item.num }}
         </li>
         <li>
-            {{ item.description }}
+            网址链接：{{ item.url }}
         </li>
         <li>
-            {{ item.url }}
+            描述：{{ item.description }}
         </li>
     </ul>
 </div>
@@ -36,18 +36,25 @@
     var app = new Vue({
         el:'#app',
         data:{
+            cinema: null,
+            platform:null,
+            price:null,
+            area:null,
             ticketList: [
                 {name:"",price:"",num:"",description:"",url:""}
             ]
         },
-        created(){
-            this.getTickte()
-            console.log(this)
-        },
+        // created(){
+        //     this.getTickte()
+        //     console.log(this)
+        // },
         methods:{
             getTickte:function () {
                 var that = this;
-                axios.post("http://10.3.0.52:8081/movie/ticket",{"cinema":"猫眼"})
+                console.log(this.cinema)
+                console.log(that.cinema)
+                axios.post("http://10.3.0.52:8081/movie/ticket",{"cinema":that.cinema,"platform":that.platform
+                    ,"price":that.price,"area":that.area})
                     .then(function(response) {
                         console.log(this);
                         that.ticketList = response.data.data
