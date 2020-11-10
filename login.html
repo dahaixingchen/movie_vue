@@ -48,7 +48,8 @@
         methods:{
             login:function () {
                 var that = this;
-                axios.post("http://localhost:39006/user/login",{"name":that.name,"password":that.password})
+                // axios.post("http://localhost:39006/user/login",{"name":that.name,"password":that.password})
+                axios.post("http://47.112.115.39:39006/user/login",{"name":that.name,"password":that.password})
                     .then(function(response) {
                         console.log(response);
                         that.message = response.data.message
@@ -63,7 +64,7 @@
             },
             open_win:function () {
                 // window.open("http://localhost:39006/index.html","_self")
-                window.open("http://localhost:39006/index.html","_self")
+                window.open("http://47.112.115.39:39006/index.html","_self")
             }
         }
     })

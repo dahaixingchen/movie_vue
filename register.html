@@ -56,7 +56,8 @@
         methods: {
             register: function () {
                 var that = this;
-                axios.post("http://localhost:39006/user/add-user", {
+                // axios.post("http://localhost:39006/user/add-user", {
+                axios.post("http://47.112.115.39:39006/user/add-user", {
                     "name": this.name
                     , "password": this.password, "phone": this.phone
                 })
@@ -71,7 +72,8 @@
                     })
             },
             open_win :function () {
-                window.open("http://localhost:39006/login.html","_self");
+                // window.open("http://localhost:39006/login.html","_self");
+                window.open("http://47.112.115.39:39006/login.html","_self");
             }
 
         }
