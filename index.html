@@ -119,7 +119,8 @@
                     <span style="color:red;font-size:14px;">注意：如果购买地址不能跳转的话，就复制标题，然后点击网页地址，到打开的网页上查询
                         （一般网站，Ctrl+f，打开网站搜索框，然后把标题放到搜索框中）</span>
                     <br>
-                    <span>如有疑问请添加客服微信：muyeafei_88，备份，网站的问题</span>
+                    <span>如有疑问请添加客服微信：muyeafei_88，备份，影票搜索神器</span>
+                    <img src="./imag/weixin.jpg" height="100" width="100">
                 </p>
                 <section>
                     <span>全部结果&gt;</span>
@@ -150,6 +151,26 @@
 <script type="text/javascript" src="layui/layui.js" charset="utf-8"></script>
 <script type="text/javascript" src="usteel-search/search.js"></script>
 <script type="text/javascript">
+
+    function formatSearch(se){
+        if (typeof se !== "undefined") {
+            se = se.substr(1);  //从起始索引号提取字符串中指定数目的字符
+            var arr = se.split("&"),  //把字符串分割为字符串数组
+                obj = {},
+                newarr = [];
+            arr.forEach(function(v, i){ //数组遍历
+                console.log(v);
+                console.log(i);
+                newarr = v.split("=");
+                if(typeof obj[newarr[0]] === "undefined"){
+                    obj[newarr[0]] = newarr[1];
+                }
+            });
+            return obj;
+        };
+    }
+    var obj = formatSearch(window.location.search)
+
     var app = new Vue({
         el:'#app',
         data:{
@@ -158,6 +179,7 @@
             movieName:null,
             price:null,
             area:null,
+            userId:null,
             ticketList: [
                 {name:"",price:"",num:"",description:"",url:"",buyRule:null}
             ]
@@ -165,19 +187,39 @@
         methods:{
             getTickte:function () {
                 var that = this;
-                console.log("this.cinema 的内容"+this.cinema)
-                console.log("that.cinema 的内容"+that.cinema)
-                // axios.post("http://localhost:39006/movie/ticket",{"cinema":that.cinema,"platform":that.platform
-                axios.post("http://47.112.115.39:39006/movie/ticket",{"cinema":that.cinema,"platform":that.platform
-                    ,"price":that.price,"area":that.area,"movieName":that.movieName})
+                that.userId = that.formatSearch(window.location.search);
+                axios.post("http://localhost:39006/movie/ticket",{"cinema":that.cinema,"platform":that.platform
+                // axios.post("http://47.112.115.39:39006/movie/ticket",{"cinema":that.cinema,"platform":that.platform
+                    ,"price":that.price,"area":that.area,"movieName":that.movieName,"userId":that.userId})
                     .then(function(response) {
-                        console.log("this 的内容"+this);
-                        console.log("response 的内容"+response);
-                        that.ticketList = response.data.data
-                        console.log("response.data.data 的内容"+response.data.data);
-                        console.log("response的data内容 的内容"+response.data);
-                        console.log(that.ticketList)
+                        if (response.data.status != 200) {
+                            alert(response.data.message)
+                            that.open_win()
+                        }else {
+                            that.ticketList = response.data.data
+                        }
                     })
+            },
+            formatSearch:function (se) {
+                if (typeof se !== "undefined") {
+                    se = se.substr(1);  //从起始索引号提取字符串中指定数目的字符
+                    var arr = se.split("&"),  //把字符串分割为字符串数组
+                        obj = {},
+                        newarr = [];
+                    arr.forEach(function(v, i){ //数组遍历
+                        console.log(v);
+                        console.log(i);
+                        newarr = v.split("=");
+                        if(typeof obj[newarr[0]] === "undefined"){
+                            obj[newarr[0]] = newarr[1];
+                        }
+                    });
+                    return decodeURI(obj.userid);
+                };
+            },
+            open_win:function () {
+                var  str = encodeURI('./login.html')
+                window.open(str,"_self")
             }
         }
     })
